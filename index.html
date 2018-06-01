@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8"/>
-<title>WebMegane</title>
+<title>WebMegane（色覚体験）</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 </head>
@@ -16,6 +16,18 @@ body {
 	width: 100%;
 	transform: scale(0.01);
 }
+
+#caption {
+	z-index: 1;
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 20%;
+	color: white;
+}
+
 #canvas {
 	z-index: 3;
 	display: block;
@@ -39,48 +51,49 @@ body {
 <canvas id="canvas"></canvas>
 <video id="video" autoplay playsinline></video>
 <div id=debug></div>
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		version="1.1">
-		<defs>
-		  <filter id="protanopia">
-			<feColorMatrix
-			  in="SourceGraphic"
-			  type="matrix"
-			  values="0.567, 0.433, 0,     0, 0
-					  0.558, 0.442, 0,     0, 0
-					  0,     0.242, 0.758, 0, 0
-					  0,     0,     0,     1, 0"/>
-		  </filter>
-		  <filter id="deuteranopia">
-			<feColorMatrix
-			  in="SourceGraphic"
-			  type="matrix"
-			  values="0.625, 0.375, 0,   0, 0
-					  0.7,   0.3,   0,   0, 0
-					  0,     0.3,   0.7, 0, 0
-					  0,     0,     0,   1, 0"/>
-		  </filter>
-		  <filter id="tritanopia">
-			<feColorMatrix
-			  in="SourceGraphic"
-			  type="matrix"
-			  values="0.95, 0.05,  0,     0, 0
-					  0,    0.433, 0.567, 0, 0
-					  0,    0.475, 0.525, 0, 0
-					  0,    0,     0,     1, 0"/>
-		  </filter>
-		  <filter id="achromatopsia">
-			<feColorMatrix
-			  in="SourceGraphic"
-			  type="matrix"
-			  values="0.299, 0.587, 0.114, 0, 0
-					  0.299, 0.587, 0.114, 0, 0
-					  0.299, 0.587, 0.114, 0, 0
-					  0,     0,     0,     1, 0"/>
-		  </filter>
-		</defs>
-	</svg>
+<div id="caption">画面をタップしてモード設定後、VRゴーグルに装着してください。</div>
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	version="1.1">
+	<defs>
+		<filter id="protanopia">
+		<feColorMatrix
+			in="SourceGraphic"
+			type="matrix"
+			values="0.567, 0.433, 0,     0, 0
+					0.558, 0.442, 0,     0, 0
+					0,     0.242, 0.758, 0, 0
+					0,     0,     0,     1, 0"/>
+		</filter>
+		<filter id="deuteranopia">
+		<feColorMatrix
+			in="SourceGraphic"
+			type="matrix"
+			values="0.625, 0.375, 0,   0, 0
+					0.7,   0.3,   0,   0, 0
+					0,     0.3,   0.7, 0, 0
+					0,     0,     0,   1, 0"/>
+		</filter>
+		<filter id="tritanopia">
+		<feColorMatrix
+			in="SourceGraphic"
+			type="matrix"
+			values="0.95, 0.05,  0,     0, 0
+					0,    0.433, 0.567, 0, 0
+					0,    0.475, 0.525, 0, 0
+					0,    0,     0,     1, 0"/>
+		</filter>
+		<filter id="achromatopsia">
+		<feColorMatrix
+			in="SourceGraphic"
+			type="matrix"
+			values="0.299, 0.587, 0.114, 0, 0
+					0.299, 0.587, 0.114, 0, 0
+					0.299, 0.587, 0.114, 0, 0
+					0,     0,     0,     1, 0"/>
+		</filter>
+	</defs>
+</svg>
 </body>
 <script src="fukuno.js"></script>
 <script>"use strict";
@@ -154,9 +167,11 @@ window.onload = function() {
 	
 	var mode = 0;
 	var filters = [ "", "url(#protanopia)", "url(#deuteranopia)", "url(#tritanopia)", "url(#achromatopsia)", "blur(5px)"];
+	var names = [ "C型", "P型", "D型", "T型", "A型", "LV（低視力）"];
 
 	canvas.onmousedown = function() {
 		canvas.style.filter = filters[mode] ;
+		document.getElementById("caption").innerText = names[mode] ;
 		mode = (mode + 1) % filters.length;
 	};
 };

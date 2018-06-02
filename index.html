@@ -119,6 +119,11 @@ window.onload = function() {
 			alert(err);
 		}
 	);
+
+	var mode = 0;
+	var filters = [ "", "url(#protanopia)", "url(#deuteranopia)", "url(#tritanopia)", "url(#achromatopsia)", "blur(5px)"];
+	var names = [ "C型", "P型", "D型", "T型", "A型", "LV（低視力）"];
+
 	var g = canvas.getContext("2d");
 	var draw = function() {
 		const cw = window.innerWidth;
@@ -134,7 +139,14 @@ window.onload = function() {
 /*		const fitwidth = caspect < vaspect; // auto fit screen */
 		const fitwidth = true; // force fit width
 //		const fitwidth = false; // force fit height
+
+		g.lineWidth = 1;
+    	g.fillStyle = "#fff";
+		g.font = "40px normal";
+		g.strokeStyle = "#000";
 		
+		var name = names[mode];
+
 		if (fitwidth) {
 			const vh2 = vw * caspect;
 			if (vh2 > vh) {
@@ -142,10 +154,18 @@ window.onload = function() {
 				const ch2 = cw2 * vaspect;
 				g.drawImage(video, 0, 0, vw, vh, 0, cy, cw2, ch2);
 				g.drawImage(video, 0, 0, vw, vh, cw2, cy, cw2, ch2);
+				g.fillText(name, 0, cy);
+				g.fillText(name, cw2, cy);
+				g.strokeText(name, 0, cy);
+				g.strokeText(name, cw2, cy);
 			} else {
 				const vy = (vh - vh2) / 2;
 				g.drawImage(video, 0, vy, vw, vh2, 0, 0, cw2, ch);
 				g.drawImage(video, 0, vy, vw, vh2, cw2, 0, cw2, ch);
+				g.fillText(name, vh2, 0);
+				g.fillText(name, vh2, cw2);
+				g.strokeText(name, vh2, 0);
+				g.strokeText(name, vh2, cw2);
 			}
 		} else {
 			const vw2 = vh / caspect;
@@ -155,24 +175,31 @@ window.onload = function() {
 				console.log(cx);
 				g.drawImage(video, 0, 0, vw, vh, cx, 0, cw3, ch);
 				g.drawImage(video, 0, 0, vw, vh, cw2 + cx, 0, cw3, ch);
+				g.fillText(name, cx, 0);
+				g.fillText(name, cw2 + cx, 0);
+				g.strokeText(name, cx, 0);
+				g.strokeText(name, cw2 + cx, 0);
 			} else {
 				const vx = (vw - vw2) / 2;
 				g.drawImage(video, vx, 0, vw2, vh, 0, 0, cw2, ch);
 				g.drawImage(video, vx, 0, vw2, vh, cw2, 0, cw2, ch);
+				g.fillText(name, 0, 0);
+				g.fillText(name, cw2, 0);
+				g.strokeText(name, 0, 0);
+				g.strokeText(name, cw2, 0);
 			}
 		}
+
 		requestAnimationFrame(draw);
 	};
 	draw();
 	
-	var mode = 0;
-	var filters = [ "", "url(#protanopia)", "url(#deuteranopia)", "url(#tritanopia)", "url(#achromatopsia)", "blur(5px)"];
-	var names = [ "C型", "P型", "D型", "T型", "A型", "LV（低視力）"];
-
 	canvas.onmousedown = function() {
-		canvas.style.filter = filters[mode] ;
-		document.getElementById("caption").innerText = names[mode] ;
 		mode = (mode + 1) % filters.length;
+		
+		canvas.style.filter = filters[mode] ;
+		var can = document.getElementById("canvas");
+		document.getElementById("caption").innerText = names[mode] ;
 	};
 };
 </script>

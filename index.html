@@ -93,41 +93,47 @@ window.onload = function() {
 			}
 		}
 		
+		var canvas0 = document.getElementById('canvas0');
+		var g0 = canvas0.getContext("2d");
+
+		canvas0.width  = cw;
+		canvas0.height = ch;
+			
 		var drawText = function(s, x, y) {
 			for (var i = 0; i < 8; i += 4) {
-				g.strokeText(s, pos[i] + x * pos[i + 2], pos[i + 1] + y * pos[i + 3]);
-				g.fillText(s, pos[i] + x * pos[i + 2], pos[i + 1] + y * pos[i + 3]);
+				g0.strokeText(s, pos[i] + x * pos[i + 2], pos[i + 1] + y * pos[i + 3]);
+				g0.fillText(s, pos[i] + x * pos[i + 2], pos[i + 1] + y * pos[i + 3]);
 			}
 		};
 		var fillRect = function(x, y, w, h) {
 			for (var i = 0; i < 8; i += 4) {
-				g.fillRect(pos[i] + x * pos[i + 2], pos[i + 1] + y * pos[i + 3], w * pos[i + 2], h * pos[i + 3]);
+				g0.fillRect(pos[i] + x * pos[i + 2], pos[i + 1] + y * pos[i + 3], w * pos[i + 2], h * pos[i + 3]);
 			}
 		};
 		
 		var fh = pos[2] / 30;
 		// name
-		g.font = fh + "px sans-serif";
-		g.textAlign = "left";
- 		g.textBaseline = "top";
-		g.fillStyle = "rgb(255, 255, 255)";
-		g.strokeStyle = "rgb(0, 0, 0)";
+		g0.font = fh + "px sans-serif";
+		g0.textAlign = "left";
+		g0.textBaseline = "top";
+		g0.fillStyle = "rgb(255, 255, 255)";
+		g0.strokeStyle = "rgb(0, 0, 0)";
 		drawText(names[mode], 0.5, 0.05);
 	
 		// clock
-		g.font = fh + "px sans-serif";
-		g.textAlign = "left";
- 		g.textBaseline = "top";
-		g.fillStyle = "rgb(255, 255, 255)";
-		g.strokeStyle = "rgb(0, 0, 0)";
+		g0.font = fh + "px sans-serif";
+		g0.textAlign = "left";
+		g0.textBaseline = "top";
+		g0.fillStyle = "rgb(255, 255, 255)";
+		g0.strokeStyle = "rgb(0, 0, 0)";
 		drawText(getNow(), 0.05, 0.05);
 		
-		g.strokeStyle = "rgb(255, 255, 255)";
+		g0.strokeStyle = "rgb(255, 255, 255)";
 		for (var i = 0; i < 8; i += 4) {
 			var r = pos[2] / 120;
-			g.beginPath();
-			g.arc(pos[i] + pos[i + 2] / 2, pos[i + 1] + pos[i + 3] / 2, r, 0, 2 * Math.PI);
-			g.stroke();
+			g0.beginPath();
+			g0.arc(pos[i] + pos[i + 2] / 2, pos[i + 1] + pos[i + 3] / 2, r, 0, 2 * Math.PI);
+			g0.stroke();
 		}
 		var ox = pos[0] + pos[2] / 2;
 		var oy = pos[1] + pos[3] / 2;
@@ -147,25 +153,25 @@ window.onload = function() {
 			}
 			col += h;
 			
-			g.fillStyle = [ "rgb(255,0,0)", "rgb(0,255,0)", "rgb(0,0,255)" ][i];
+			g0.fillStyle = [ "rgb(255,0,0)", "rgb(0,255,0)", "rgb(0,0,255)" ][i];
 			fillRect(0.8, 0.18 + i * 0.05, 0.15 * val / 255, 0.05);
 		}
-		g.fillStyle = col;
+		g0.fillStyle = col;
 		fillRect(0.8, 0.12, 0.15, 0.05);
 		
 		var fh = pos[2] / 30;
-		g.font = fh + "px Courier";
-		g.textAlign = "right";
- 		g.textBaseline = "top";
-		g.fillStyle = "rgb(255, 255, 255)";
-		g.strokeStyle = "rgb(0, 0, 0)";
+		g0.font = fh + "px Courier";
+		g0.textAlign = "right";
+		g0.textBaseline = "top";
+		g0.fillStyle = "rgb(255, 255, 255)";
+		g0.strokeStyle = "rgb(0, 0, 0)";
 		drawText(col, 0.95, 0.05);
 		
 		requestAnimationFrame(draw);
 	};
 	draw();
 	
-	canvas.onmousedown = function() {
+	canvas0.onmousedown = function() {
 		mode = (mode + 1) % filters.length;
 		canvas.style.filter = filters[mode];
 	};
@@ -180,6 +186,15 @@ body {
 	display: block;
 	width: 100%;
 	transform: scale(0.01);
+}
+#canvas0 {
+	z-index: 4;
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }
 #canvas {
 	z-index: 3;
@@ -242,6 +257,7 @@ body {
 			</filter>
 		</defs>
 	</svg>
+<canvas id="canvas0"></canvas>
 <canvas id="canvas"></canvas>
 <video id="video" autoplay playsinline></video>
 <div id=debug></div>

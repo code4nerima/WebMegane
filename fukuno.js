@@ -198,7 +198,7 @@ var ajax = function(url, callback) {
 	xhr.setRequestHeader("If-Modified-Since", "Thu, 01 Jun 1970 00:00:00 GMT");
 	xhr.send(data);
 };
-var xml2json = function(xml) { // attribute–³‹A–¼‘Od‚È‚Á‚½‚ç”z—ñ‰»
+var xml2json = function(xml) { // attributeï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Oï¿½dï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½zï¿½ï¿½
 	var f = function(xml) {
 		var json = {};
 		var text = [];
